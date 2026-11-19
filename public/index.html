@@ -309,7 +309,7 @@
                     </label>
                   </div>
 
-                  <div style="display: flex; gap: 0.75rem;">
+                  <div class="form-actions-row">
                     <button type="submit" class="btn btn-primary" id="btnSaveDiagnostic">
                       💾 Guardar y Generar Acta Formal
                     </button>
@@ -419,7 +419,7 @@
               <button id="btnRefreshQueue" class="btn btn-secondary btn-sm">Actualizar</button>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; text-align: center; margin: 1rem 0;">
+            <div class="queue-stats-grid">
               <div style="background: var(--color-surface-card); padding: 0.75rem; border-radius: var(--radius-md);">
                 <div style="font-size: 1.5rem; font-weight: 700; color: #38bdf8;" id="statPending">0</div>
                 <div style="font-size: 0.75rem; color: var(--color-text-muted);">Pendientes</div>
@@ -586,7 +586,7 @@
           <input type="text" id="newIncIp" placeholder="Ej: 192.168.1.10 o 10.0.4.1">
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+        <div class="modal-actions-row">
           <button type="button" class="btn btn-secondary" id="btnCancelIncModal">Cancelar</button>
           <button type="submit" class="btn btn-primary">Registrar Incidente</button>
         </div>
@@ -643,7 +643,7 @@
           </div>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <div class="modal-actions-row">
           <button type="button" class="btn btn-secondary" id="btnCancelEscModal">Cancelar</button>
           <button type="submit" class="btn btn-danger">Confirmar y Escalar Incidente</button>
         </div>
@@ -661,7 +661,7 @@
         <button class="btn btn-secondary btn-sm" id="btnCloseRepModal">&times;</button>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+      <div class="report-actions-row">
         <button class="btn btn-secondary btn-sm" id="btnViewPlainText">Texto Plano (Para ITSM)</button>
         <button class="btn btn-secondary btn-sm" id="btnViewJson">Formato JSON</button>
         <button class="btn btn-primary btn-sm" id="btnCopyReport">📋 Copiar al Portapapeles</button>
