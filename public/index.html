@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FieldOps & Support | Estandarización de Triaje y Banco de Skills de Red</title>
+  <meta name="description" content="Plataforma modular para triaje técnico de fallas de red, redacción de bitácoras operativas y escalamiento de incidentes P1-P4.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Encabezado Principal y Sesión RBAC -->
+  <header class="app-header" role="banner">
+    <div class="brand-wrapper">
+      <span class="brand-badge" aria-hidden="true">FIELDOPS</span>
+      <div>
+        <h1 class="brand-title">FieldOps & Support</h1>
+        <p class="brand-subtitle">Banco Modular de Skills Técnicas, Triaje de Red y Bitácoras</p>
+      </div>
+    </div>
+
+    <div class="user-session-bar" role="region" aria-label="Sesión de usuario">
+      <div id="userDisplay" class="user-badge">
+        <span id="userName">Cargando sesión...</span>
+        <span id="userRole" class="role-pill">TECNICO</span>
+      </div>
+      <button id="btnSwitchUser" class="btn btn-secondary btn-sm" title="Cambiar usuario o perfil de prueba">
+        Cambiar Rol
+      </button>
+      <button id="btnHeaderContext" class="btn btn-primary btn-sm" title="Ver Contexto y Alcance del Proyecto">
+        ℹ️ Contexto del Proyecto
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <!-- Navegación por Pestañas Accesibles -->
+    <nav class="main-nav" role="tablist" aria-label="Secciones operativas">
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnContext" aria-controls="tabContext">
+        <span>ℹ️</span> Contexto y Alcance
+      </button>
+      <button class="nav-tab active" role="tab" aria-selected="true" id="tabBtnTriage" aria-controls="tabTriage">
+        <span>⚡</span> Triaje y Diagnóstico en Vivo
+      </button>
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnSkills" aria-controls="tabSkills">
+        <span>📚</span> Banco Modular de Skills
+      </button>
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnReports" aria-controls="tabReports">
+        <span>📋</span> Bitácoras y Actas de Cierre
+      </button>
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnEscalations" aria-controls="tabEscalations">
+        <span>🚨</span> Escalamiento Técnico (P1–P4)
+      </button>
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnQueue" aria-controls="tabQueue">
+        <span>⚙️</span> Monitor de Cola y DLQ
+      </button>
+      <button class="nav-tab" role="tab" aria-selected="false" id="tabBtnComms" aria-controls="tabComms">
+        <span>💬</span> Guía de Comunicación
+      </button>
+    </nav>
+
+    <div id="globalAlert" role="alert" style="display: none;"></div>
+
+    <main id="mainContent">
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA: CONTEXTO Y ALCANCE DEL PROYECTO (GITHUB / DOCUMENTACIÓN)-->
+      <!-- ============================================================== -->
+      <section id="tabContext" class="tab-content" role="tabpanel" aria-labelledby="tabBtnContext">
+        
+        <!-- Hero Banner Contextual -->
+        <div class="card" style="margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(56, 189, 248, 0.3);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <span class="brand-badge" style="margin-bottom: 0.5rem; display: inline-block;">ESPECIFICACIÓN OFICIAL</span>
+              <h2 style="font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem;">FieldOps & Support: Banco Modular de Skills y Triaje Técnico</h2>
+              <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 900px;">
+                Plataforma de ingeniería para estandarizar el triaje de fallas técnicas de red y dispositivos, eliminar la ambigüedad en los reportes operativos de campo y help desk, y garantizar un escalamiento estructurado con evidencia cuantitativa mínima hacia niveles superiores.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="user-badge" style="color: #38bdf8;">✔ Arquitectura Hexagonal</span>
+              <span class="user-badge" style="color: #34d399;">✔ SQLite WAL Nativo</span>
+              <span class="user-badge" style="color: #fbbf24;">✔ Resiliencia con DLQ</span>
+              <span class="user-badge" style="color: #cbd5e1;">✔ WCAG 2.2 Accesible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          
+          <!-- Card: El Problema y la Propuesta de Valor -->
+          <div class="card">
+            <h3 class="card-title" style="color: var(--color-primary); margin-bottom: 0.75rem;">
+              <span>🎯</span> Problema Real y Propuesta de Valor
+            </h3>
+
+            <div style="margin-bottom: 1rem;">
+              <h4 style="font-size: 0.85rem; color: #f87171; text-transform: uppercase; margin-bottom: 0.25rem;">El Problema en Operaciones:</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">
+                Los técnicos en campo y agentes de HelpDesk suelen redactar reportes ambiguos como <em>"no hay red"</em> o <em>"se cayó el sistema"</em>, provocando rebotes constantes con L2/L3 o proveedores ISP debido a la falta de mediciones verificables y diagnósticos estructurados.
+              </p>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <h4 style="font-size: 0.85rem; color: #34d399; text-transform: uppercase; margin-bottom: 0.25rem;">La Solución FieldOps:</h4>
+              <ul style="font-size: 0.85rem; color: #cbd5e1; margin-left: 1.25rem; line-height: 1.6;">
+                <li><strong>Árboles de decisión paso a paso:</strong> Guiar al técnico antes de sugerir reemplazos de hardware.</li>
+                <li><strong>Norma obligatoria de 4 secciones:</strong> Síntoma $\rightarrow$ Pruebas realizadas $\rightarrow$ Causa raíz $\rightarrow$ Acción aplicada.</li>
+                <li><strong>Matriz de evidencia mínima:</strong> Bloqueo de escalamientos que no adjunten pruebas cuantitativas de ping, ipconfig y tracert.</li>
+                <li><strong>Guía de comunicación asertiva:</strong> Traducción de tecnicismos para no alarmar al usuario final.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card: Alcance y Límites del Sistema -->
+          <div class="card">
+            <h3 class="card-title" style="color: var(--color-primary); margin-bottom: 0.75rem;">
+              <span>⚖️</span> Alcance y Límites del Sistema
+            </h3>
+
+            <div style="margin-bottom: 1rem;">
+              <h4 style="font-size: 0.85rem; color: #38bdf8; text-transform: uppercase; margin-bottom: 0.25rem;">Dentro del Alcance (Lo que hace):</h4>
+              <ul style="font-size: 0.85rem; color: #cbd5e1; margin-left: 1.25rem; line-height: 1.6;">
+                <li>Módulos de skills para capas 1 a 4 (conectividad, APIPA, gateway, DNS, MTU, latencia).</li>
+                <li>Generación instantánea de actas en texto plano (para ITSM) y JSON estructurado.</li>
+                <li>Gestión de incidentes con cálculo de SLA según severidad (P1 a P4).</li>
+                <li>Cola resiliente en segundo plano con Dead Letter Queue (DLQ) para tolerancia a fallos.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 style="font-size: 0.85rem; color: #f87171; text-transform: uppercase; margin-bottom: 0.25rem;">Fuera de Alcance (Lo que NO hace):</h4>
+              <ul style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: 1.25rem; line-height: 1.6;">
+                <li>No reemplaza sistemas ITSM corporativos (Jira, ServiceNow, Remedy); se integra exportando bitácoras estandarizadas.</li>
+                <li>No ejecuta cambios remotos ni accede por SSH/Telnet a routers o switches.</li>
+                <li>No cubre infraestructura troncal BGP ni mantenimiento eléctrico de alta tensión.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Card: Acceso a los 3 Manuales Oficiales -->
+        <div class="card" style="margin-top: 1.25rem;">
+          <div class="card-header">
+            <h3 class="card-title" style="color: #fff;">
+              <span>📚</span> Manuales Oficiales y Documentación de Ingeniería
+            </h3>
+            <span class="user-badge">Disponible en carpeta /docs</span>
+          </div>
+
+          <p class="form-hint" style="margin-bottom: 1rem;">
+            Haz clic en cualquiera de los manuales técnicos para abrir el visor integrado en la plataforma:
+          </p>
+
+          <div class="grid-3">
+            
+            <div style="background: var(--color-surface-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem;">
+              <h4 style="color: #38bdf8; font-size: 0.95rem; margin-bottom: 0.35rem;">📖 Manual de Usuario</h4>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+                Guía completa para técnicos en campo, agentes L1/L2 y coordinadores. Flujos paso a paso de triaje, bitácoras y comunicación.
+              </p>
+              <button class="btn btn-secondary btn-sm btn-open-doc" data-doc="usuario" style="width: 100%;">
+                Ver Manual de Usuario
+              </button>
+            </div>
+
+            <div style="background: var(--color-surface-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem;">
+              <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.35rem;">🏛️ Manual Técnico</h4>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+                Arquitectura Hexagonal, modelo relacional SQLite, índices anti N+1, colas DLQ, estándares OWASP ASVS y catálogo REST API.
+              </p>
+              <button class="btn btn-secondary btn-sm btn-open-doc" data-doc="tecnico" style="width: 100%;">
+                Ver Manual Técnico
+              </button>
+            </div>
+
+            <div style="background: var(--color-surface-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem;">
+              <h4 style="color: #fbbf24; font-size: 0.95rem; margin-bottom: 0.35rem;">🚀 Manual de Despliegue</h4>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+                Puesta en producción en VPS/Bare-Metal (PM2, Nginx HTTPS), contenedorización Docker Compose, backups WAL y troubleshooting.
+              </p>
+              <button class="btn btn-secondary btn-sm btn-open-doc" data-doc="despliegue" style="width: 100%;">
+                Ver Manual de Despliegue
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Card: Guía Rápida para Subir a GitHub -->
+        <div class="card" style="margin-top: 1.25rem;">
+          <h3 class="card-title" style="color: #fff; margin-bottom: 0.5rem;">
+            <span>🐙</span> Guía de Publicación en GitHub
+          </h3>
+          <p class="form-hint" style="margin-bottom: 0.75rem;">
+            El proyecto ya cuenta con archivo <code>.gitignore</code> configurado para omitir <code>node_modules/</code> y bases de datos locales temporales. Para subirlo a tu cuenta de GitHub, ejecuta en tu terminal:
+          </p>
+
+          <div class="terminal-block">
+            <div class="terminal-header">Comandos Git para inicializar y subir a GitHub</div>
+            <code class="terminal-code">git init</code>
+            <code class="terminal-code">git add .</code>
+            <code class="terminal-code">git commit -m "feat: implementacion completa FieldOps & Support segun SKILLS.md"</code>
+            <code class="terminal-code">git branch -M main</code>
+            <code class="terminal-code">git remote add origin https://github.com/TU_USUARIO/fieldops-support.git</code>
+            <code class="terminal-code">git push -u origin main</code>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 1: TRIAJE Y DIAGNÓSTICO EN VIVO                        -->
+      <!-- ============================================================== -->
+      <section id="tabTriage" class="tab-content active" role="tabpanel" aria-labelledby="tabBtnTriage">
+        <div class="grid-2">
+          
+          <!-- Lista de Incidentes Activos -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title"><span>📡</span> Incidentes en Atención</h2>
+              <button id="btnNewIncidentModal" class="btn btn-primary btn-sm">+ Nuevo Incidente</button>
+            </div>
+            
+            <p class="form-hint" style="margin-bottom: 0.75rem;">
+              Seleccione un incidente para iniciar el triaje interactivo y aplicar la skill de red correspondiente.
+            </p>
+
+            <div class="table-responsive">
+              <table id="incidentsTable" aria-label="Tabla de incidentes en atención">
+                <thead>
+                  <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Severidad</th>
+                    <th scope="col">Cliente / Sede</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="incidentsTableBody">
+                  <!-- Inyectado por JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Asistente de Triaje y Aplicación de Skill -->
+          <div class="card" id="triageAssistantCard">
+            <div class="card-header">
+              <h2 class="card-title"><span>🔬</span> Asistente de Triaje Paso a Paso</h2>
+              <span id="selectedIncidentBadge" class="badge-p3">Seleccione incidente</span>
+            </div>
+
+            <div id="triageActiveForm">
+              <div class="form-group">
+                <label for="selectSkillToApply">Seleccionar Skill Técnica a Aplicar:</label>
+                <select id="selectSkillToApply" aria-label="Skill Técnica para diagnóstico">
+                  <!-- Opciones cargadas por JS -->
+                </select>
+                <p id="skillSummaryText" class="form-hint" style="margin-top: 0.35rem; color: #38bdf8;"></p>
+              </div>
+
+              <!-- Contenedor del Árbol de Decisión Interactivo -->
+              <div id="decisionTreeContainer" style="margin: 1rem 0;">
+                <!-- Pasos del árbol inyectados interactivamente -->
+              </div>
+
+              <!-- Comandos de referencia -->
+              <div id="referenceCommandsContainer"></div>
+
+              <!-- Formulario de Bitácora de Cierre (4 Secciones Obligatorias) -->
+              <div style="border-top: 1px solid var(--color-border); padding-top: 1rem; margin-top: 1.5rem;">
+                <h3 style="font-size: 1rem; color: var(--color-primary); margin-bottom: 0.75rem;">
+                  📝 Redacción de Bitácora Técnica de Cierre (Norma FieldOps)
+                </h3>
+
+                <form id="formDiagnosticReport">
+                  <div class="form-group">
+                    <label for="diagSymptom">1. Síntoma Reportado y Observado *</label>
+                    <textarea id="diagSymptom" required placeholder="Ej: Pérdida total de conexión a Internet en la sede. Luz de puerto en router apagada."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="diagTestsPerformed">2. Pruebas y Comandos Realizados *</label>
+                    <textarea id="diagTestsPerformed" required placeholder="Ej: Se ejecutó ipconfig /all (IP 169.254.x.x APIPA). Ping al gateway 192.168.1.1 con 100% loss. Comprobación de patch cord."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="diagProbableCause">3. Causa Raíz Probable *</label>
+                    <textarea id="diagProbableCause" required placeholder="Ej: Falla física en el patch cord categoría 6 conectado entre el PC y la roseta de red."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="diagActionApplied">4. Acción Aplicada y Resultado *</label>
+                    <textarea id="diagActionApplied" required placeholder="Ej: Se reemplazó patch cord por cable certificado de 2m. Se ejecutó ipconfig /renew obteniendo IP 192.168.1.45. Ping normal a gateway (1ms)."></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label>
+                      <input type="checkbox" id="chkResolveIncident" checked style="width: auto; margin-right: 0.5rem;">
+                      Marcar incidente como <strong>RESUELTO</strong> tras guardar esta bitácora
+                    </label>
+                  </div>
+
+                  <div style="display: flex; gap: 0.75rem;">
+                    <button type="submit" class="btn btn-primary" id="btnSaveDiagnostic">
+                      💾 Guardar y Generar Acta Formal
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnOpenEscalateModal">
+                      🚨 Escalar a Nivel Superior (P1–P4)
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 2: BANCO MODULAR DE SKILLS                             -->
+      <!-- ============================================================== -->
+      <section id="tabSkills" class="tab-content" role="tabpanel" aria-labelledby="tabBtnSkills">
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <h2 class="card-title"><span>📚</span> Catálogo de Skills Modulares de Red y Soporte</h2>
+          <p class="form-hint">
+            Banco de conocimientos técnicos autocontenidos aplicables sin conexión a bases de datos externas. Cada skill define listas de chequeo, árboles de decisión y comandos verificables de diagnóstico.
+          </p>
+        </div>
+
+        <div id="skillsListGrid" class="grid-3">
+          <!-- Tarjetas de Skills inyectadas por JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 3: BITÁCORAS Y ACTAS DE CIERRE                         -->
+      <!-- ============================================================== -->
+      <section id="tabReports" class="tab-content" role="tabpanel" aria-labelledby="tabBtnReports">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><span>📋</span> Historial de Bitácoras Operativas Generadas</h2>
+            <span class="badge-p4">Formato Estándar Síntoma-Causa-Pruebas-Acción</span>
+          </div>
+
+          <div class="table-responsive">
+            <table aria-label="Tabla de bitácoras de cierre">
+              <thead>
+                <tr>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Incidente</th>
+                  <th scope="col">Skill Aplicada</th>
+                  <th scope="col">Técnico</th>
+                  <th scope="col">Causa Raíz</th>
+                  <th scope="col">Exportar</th>
+                </tr>
+              </thead>
+              <tbody id="reportsTableBody">
+                <!-- Inyectado por JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 4: ESCALAMIENTOS TÉCNICOS (P1–P4)                      -->
+      <!-- ============================================================== -->
+      <section id="tabEscalations" class="tab-content" role="tabpanel" aria-labelledby="tabBtnEscalations">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><span>🚨</span> Registro de Escalamientos Técnicos hacia L2, L3 e ISP</h2>
+            <span class="badge-p1">Control Anti-Rebote con Evidencia Mínima</span>
+          </div>
+
+          <p class="form-hint" style="margin-bottom: 1rem;">
+            Los incidentes escalados requieren evidencia mínima obligatoria (pruebas cuantitativas de ping, configuración IP completa y trazado tracert).
+          </p>
+
+          <div class="table-responsive">
+            <table aria-label="Tabla de escalamientos técnicos">
+              <thead>
+                <tr>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Incidente</th>
+                  <th scope="col">Severidad</th>
+                  <th scope="col">Nivel Destino</th>
+                  <th scope="col">Escalado Por</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Evidencia Adjunta</th>
+                </tr>
+              </thead>
+              <tbody id="escalationsTableBody">
+                <!-- Inyectado por JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 5: MONITOR DE COLA Y RESILENCIA (DLQ)                 -->
+      <!-- ============================================================== -->
+      <section id="tabQueue" class="tab-content" role="tabpanel" aria-labelledby="tabBtnQueue">
+        <div class="grid-2">
+          
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title"><span>⚙️</span> Métricas del Procesador Asíncrono</h2>
+              <button id="btnRefreshQueue" class="btn btn-secondary btn-sm">Actualizar</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; text-align: center; margin: 1rem 0;">
+              <div style="background: var(--color-surface-card); padding: 0.75rem; border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #38bdf8;" id="statPending">0</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Pendientes</div>
+              </div>
+              <div style="background: var(--color-surface-card); padding: 0.75rem; border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #fbbf24;" id="statProcessing">0</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Procesando</div>
+              </div>
+              <div style="background: var(--color-surface-card); padding: 0.75rem; border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #34d399;" id="statCompleted">0</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Completadas</div>
+              </div>
+              <div style="background: var(--color-surface-card); padding: 0.75rem; border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #f87171;" id="statDlq">0</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Dead Letter (DLQ)</div>
+              </div>
+            </div>
+
+            <p class="form-hint">
+              Mecanismo de resiliencia con límite de 3 reintentos y persistencia duradera en SQLite. Si una tarea excede los reintentos, se traslada a la Dead Letter Queue para replay controlado.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title"><span>📜</span> Tareas Recientes en Cola</h2>
+            </div>
+
+            <div class="table-responsive">
+              <table aria-label="Tareas en cola">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Intentos</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="queueJobsTableBody">
+                  <!-- Inyectado por JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- PESTAÑA 6: GUÍA DE COMUNICACIÓN CON EL USUARIO                 -->
+      <!-- ============================================================== -->
+      <section id="tabComms" class="tab-content" role="tabpanel" aria-labelledby="tabBtnComms">
+        <div class="card" style="margin-bottom: 1.25rem;">
+          <h2 class="card-title"><span>💬</span> SKILL-COM-01: Protocolo de Comunicación Asertiva</h2>
+          <p class="form-hint">
+            Guía rápida de empatía y traducción de jerga técnica para técnicos en campo y agentes de mesa de ayuda.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          
+          <div class="card">
+            <h3 style="color: var(--color-primary); font-size: 1rem; margin-bottom: 0.75rem;">
+              🗣️ Traductor de Jerga Técnica a Lenguaje de Usuario
+            </h3>
+
+            <div class="decision-outcome" style="margin-bottom: 0.75rem;">
+              <strong style="color: #f87171;">Término Técnico:</strong> "IP APIPA / Agotamiento DHCP"<br>
+              <strong style="color: #34d399;">Qué decirle al usuario:</strong> "El equipo no ha recibido una dirección válida de la red central; vamos a refrescar la solicitud al servidor para que le asigne su conexión de inmediato."
+            </div>
+
+            <div class="decision-outcome" style="margin-bottom: 0.75rem;">
+              <strong style="color: #f87171;">Término Técnico:</strong> "Pérdida de paquetes (Packet Loss) y Jitter alto"<br>
+              <strong style="color: #34d399;">Qué decirle al usuario:</strong> "La señal de la conexión está teniendo microcortes, lo que causa lentitud al abrir archivos o congelamiento en llamadas."
+            </div>
+
+            <div class="decision-outcome" style="margin-bottom: 0.75rem;">
+              <strong style="color: #f87171;">Término Técnico:</strong> "Falla de resolución DNS"<br>
+              <strong style="color: #34d399;">Qué decirle al usuario:</strong> "Su equipo tiene conexión con la red, pero el directorio de nombres no le está indicando dónde se encuentra el servidor web."
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="color: var(--color-primary); font-size: 1rem; margin-bottom: 0.75rem;">
+              🤝 Protocolo de Validación y Cierre Conjunto
+            </h3>
+
+            <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+              Antes de solicitar la firma del acta o cerrar el ticket, el técnico debe solicitar la prueba del flujo de trabajo real por parte del usuario:
+            </p>
+
+            <blockquote style="border-left: 3px solid var(--color-success); padding-left: 1rem; font-style: italic; color: #cbd5e1; margin-bottom: 1rem;">
+              "Hemos restablecido la conexión y las pruebas de red muestran tiempos de respuesta óptimos. Por favor, intente ingresar a su sistema y realizar su tarea habitual para verificar juntos que todo opere con normalidad."
+            </blockquote>
+
+            <h4 style="font-size: 0.85rem; color: #f87171; text-transform: uppercase;">Frases Prohibidas en FieldOps:</h4>
+            <ul style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: 1.25rem; margin-top: 0.5rem;">
+              <li>"El problema seguro es de ustedes que movieron algo."</li>
+              <li>"Eso no me corresponde a mí, abra otro ticket."</li>
+              <li>"La red se cayó y no hay nada que hacer hasta nuevo aviso."</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: CREAR NUEVO INCIDENTE                                   -->
+  <!-- ============================================================== -->
+  <div id="modalNewIncident" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalIncTitle">
+    <div class="modal-box">
+      <div class="card-header">
+        <h2 id="modalIncTitle" class="card-title">Registrar Nuevo Incidente Técnico</h2>
+        <button class="btn btn-secondary btn-sm" id="btnCloseIncModal">&times;</button>
+      </div>
+
+      <form id="formNewIncident">
+        <div class="form-group">
+          <label for="newIncTitle">Título del Incidente *</label>
+          <input type="text" id="newIncTitle" required minlength="5" placeholder="Ej: Falla de enlace en sede principal">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="newIncSeverity">Severidad *</label>
+            <select id="newIncSeverity" required>
+              <option value="P1">P1 - Crítico (Sede aislada / Emergencia - SLA 2h)</option>
+              <option value="P2">P2 - Alto (Degradación severa / Pérdida paquetes - SLA 4h)</option>
+              <option value="P3" selected>P3 - Medio (Usuario o equipo específico - SLA 8h)</option>
+              <option value="P4">P4 - Menor (Consulta o ajuste local - SLA 24h)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="newIncDeviceType">Tipo de Dispositivo *</label>
+            <select id="newIncDeviceType">
+              <option value="ROUTER">Router / Gateway</option>
+              <option value="SWITCH_ACCESS">Switch de Acceso</option>
+              <option value="AP_WIFI">Access Point Wi-Fi</option>
+              <option value="WORKSTATION">Puesto de Trabajo (PC)</option>
+              <option value="SERVER">Servidor Local</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="newIncCustomer">Cliente / Sede / Departamento *</label>
+            <input type="text" id="newIncCustomer" required minlength="3" placeholder="Ej: Sucursal Centro - Ventas">
+          </div>
+
+          <div class="form-group">
+            <label for="newIncLocation">Ubicación / Dirección</label>
+            <input type="text" id="newIncLocation" placeholder="Ej: Calle 45 #20-10, Piso 2">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newIncIp">Dirección IP de Referencia</label>
+          <input type="text" id="newIncIp" placeholder="Ej: 192.168.1.10 o 10.0.4.1">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-secondary" id="btnCancelIncModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Registrar Incidente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: ESCALAMIENTO TÉCNICO CON EVIDENCIA MÍNIMA               -->
+  <!-- ============================================================== -->
+  <div id="modalEscalate" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalEscTitle">
+    <div class="modal-box">
+      <div class="card-header">
+        <h2 id="modalEscTitle" class="card-title">🚨 Escalamiento Técnico de Incidente</h2>
+        <button class="btn btn-secondary btn-sm" id="btnCloseEscModal">&times;</button>
+      </div>
+
+      <form id="formEscalateIncident">
+        <input type="hidden" id="escIncidentId">
+
+        <div class="form-group">
+          <label for="escTargetLevel">Nivel de Escalamiento Destino *</label>
+          <select id="escTargetLevel" required>
+            <option value="L2_ESPECIALISTA">L2 - Especialista de Soporte Avanzado</option>
+            <option value="L3_INGENIERIA_RED">L3 - Ingeniería de Red / NOC</option>
+            <option value="PROVEEDOR_ISP">Proveedor ISP / Carrier (Última milla)</option>
+            <option value="GARANTIA_HARDWARE">Garantía / Reemplazo de Hardware</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="escReason">Justificación Técnica del Escalamiento *</label>
+          <textarea id="escReason" required minlength="10" placeholder="Explique por qué no es posible resolver en campo y qué acción se requiere del nivel superior."></textarea>
+        </div>
+
+        <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+          <h3 style="font-size: 0.9rem; color: #f87171; margin-bottom: 0.5rem;">
+            ⚠️ Matriz de Evidencias Mínimas Obligatorias (Complete al menos 2)
+          </h3>
+
+          <div class="form-group">
+            <label for="evPing">Evidencia 1: Prueba de Ping Cuantitativa (Loss% y Latencia)</label>
+            <textarea id="evPing" placeholder="Ej: ping -n 30 al Gateway: 0% loss (1ms). ping -n 30 a 8.8.8.8: 45% loss, max 840ms."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="evIpConfig">Evidencia 2: Configuración IP y Enlace Local</label>
+            <textarea id="evIpConfig" placeholder="Ej: IP: 192.168.1.100, Gateway: 192.168.1.1, DNS: 192.168.1.1 (DHCP OK). Link a 1Gbps Full Duplex."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="evTracert">Evidencia 3: Trazado de Ruta (Tracert)</label>
+            <textarea id="evTracert" placeholder="Ej: Salto 1: 192.168.1.1 (1ms). Salto 2: 190.24.10.1 (ISP Borde) -> * * * Tiempo agotado."></textarea>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" id="btnCancelEscModal">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Confirmar y Escalar Incidente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: VISOR DE ACTA / BITÁCORA GENERADA                       -->
+  <!-- ============================================================== -->
+  <div id="modalReportViewer" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalRepTitle">
+    <div class="modal-box" style="max-width: 800px;">
+      <div class="card-header">
+        <h2 id="modalRepTitle" class="card-title">📋 Bitácora Operativa Generada</h2>
+        <button class="btn btn-secondary btn-sm" id="btnCloseRepModal">&times;</button>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="btn btn-secondary btn-sm" id="btnViewPlainText">Texto Plano (Para ITSM)</button>
+        <button class="btn btn-secondary btn-sm" id="btnViewJson">Formato JSON</button>
+        <button class="btn btn-primary btn-sm" id="btnCopyReport">📋 Copiar al Portapapeles</button>
+        <button class="btn btn-secondary btn-sm" id="btnDownloadJson">⬇️ Descargar JSON</button>
+      </div>
+
+      <div class="terminal-block" style="max-height: 400px; overflow-y: auto;">
+        <pre id="reportViewerCode" style="white-space: pre-wrap; font-family: var(--font-mono); font-size: 0.85rem; color: #e2e8f0;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

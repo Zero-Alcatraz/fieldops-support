@@ -1,0 +1,37 @@
+{
+  "code": "SKILL-OPS-01",
+  "title": "Estandarización y Redacción de Bitácoras Operativas de Cierre",
+  "category": "BITACORA_OPERATIVA",
+  "summary": "Estructura formal y obligatoria para la redacción de informes de soporte en sitio y mesa de ayuda, eliminando ambigüedad técnica.",
+  "severityRecommended": "P4",
+  "mandatorySections": [
+    {
+      "key": "symptom",
+      "label": "1. Síntoma Reportado y Observado",
+      "description": "Descripción clara del impacto técnico percibido por el usuario sin suposiciones no verificadas.",
+      "example": "El puesto de trabajo del área contable no logra acceder al software ERP ni navegar a Internet; el adaptador reporta 'Sin acceso a red'."
+    },
+    {
+      "key": "testsPerformed",
+      "label": "2. Pruebas Realizadas y Mediciones",
+      "description": "Comandos ejecutados, direcciones IP evaluadas y métricas cuantitativas obtenidas.",
+      "example": "Se ejecutó ipconfig /all (IP 169.254.12.80 APIPA). Ping a 192.168.1.1 con 100% loss. Se probó cable en puerto 4 del switch de piso."
+    },
+    {
+      "key": "probableRootCause",
+      "label": "3. Causa Raíz Probable",
+      "description": "Diagnóstico técnico preciso sustentado en las pruebas.",
+      "example": "Patch cord UTP categoría 6 deteriorado internamente en los pines 1 y 2, impidiendo la negociación de enlace con el switch."
+    },
+    {
+      "key": "actionApplied",
+      "label": "4. Acción Aplicada y Resultado Final",
+      "description": "Trabajo correctivo realizado y comprobación de servicio operativo con el usuario.",
+      "example": "Se sustituyó el patch cord por cable certificado de 2m. Se ejecutó ipconfig /renew obteniendo 192.168.1.45. Ping a gateway 1ms (0% loss) y ERP operativo."
+    }
+  ],
+  "outputTemplates": {
+    "plainText": "Estandarizado en mayúsculas y bloques legibles para ITSM corporativo o correo electrónico.",
+    "jsonFormat": "Estructura normalizada para almacenamiento, auditoría y análisis estadístico."
+  }
+}

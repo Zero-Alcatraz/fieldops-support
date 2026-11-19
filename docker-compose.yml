@@ -1,0 +1,20 @@
+services:
+  fieldops-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fieldops-support-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - DB_PATH=/app/data/fieldops.sqlite
+      - JWT_SECRET=fieldops-secret-prod-2026-secure
+    volumes:
+      - fieldops_data:/app/data
+
+volumes:
+  fieldops_data:
+    driver: local

@@ -1,0 +1,50 @@
+{
+  "code": "SKILL-NET-02",
+  "title": "Diagnóstico de Latencia, Jitter y Pérdida de Paquetes",
+  "category": "LATENCIA_Y_PAQUETES",
+  "summary": "Detección y aislamiento de cuellos de botella, saturación de ancho de banda, bufferbloat y degradación de calidad de servicio.",
+  "severityRecommended": "P2",
+  "commands": [
+    {
+      "command": "ping -n 30 <GATEWAY_IP>",
+      "description": "Mide estabilidad en el enlace local (LAN). Evalúa varianza (jitter) y pérdida interna.",
+      "expectedOutput": "Pérdida 0%, desviación estándar < 3ms."
+    },
+    {
+      "command": "ping -n 50 8.8.8.8",
+      "description": "Prueba de esfuerzo sostenido sobre el canal de salida hacia Internet.",
+      "expectedOutput": "Pérdida < 1%, latencia media consistente según medio (fibra < 25ms, radioenlace < 50ms)."
+    },
+    {
+      "command": "tracert -d 8.8.8.8",
+      "description": "Rastreo de ruta sin resolución DNS inversa para identificar el salto exacto donde se dispara la latencia.",
+      "expectedOutput": "Tiempos incrementales estables en cada salto sin asteriscos (*) recurrentes."
+    }
+  ],
+  "decisionTree": [
+    {
+      "step": 1,
+      "question": "¿El ping de 30 paquetes al Gateway local presenta pérdida de paquetes (> 0%) o picos > 20ms?",
+      "ifYes": "Causa: Saturación del switch/AP Wi-Fi, cable UTP con diafonía/dañado o interferencia RF. Acción: Probar conexión cableada directa al router o cambiar de puerto/canal.",
+      "ifNo": "La red de área local (LAN) está limpia. Continuar a Paso 2 para evaluar WAN."
+    },
+    {
+      "step": 2,
+      "question": "Al ejecutar 'tracert -d 8.8.8.8', ¿en qué salto (hop) inicia el aumento drástico de latencia o pérdida?",
+      "ifYes": "Si el salto 1 es normal (< 2ms) y el salto 2 o 3 (IP pública del router del ISP) sube a > 150ms: Causa: Enlace de última milla saturado o degradación de fibra/radio del ISP. Acción: Recolectar trazado y escalar con SKILL-ESC-01.",
+      "ifNo": "Si todos los saltos son consistentes pero el destino final no responde, la degradación puede estar en el servidor de destino."
+    },
+    {
+      "step": 3,
+      "question": "¿Hay aplicaciones de descarga masiva o sincronización en la nube (OneDrive, Torrent, Backups) activas en el equipo o sede?",
+      "ifYes": "Causa: Bufferbloat / saturación de subida (upstream exhaust). Acción: Pausar transferencias y volver a medir ping; configurar QoS si hay acceso al router.",
+      "ifNo": "Revisar posibles bucles de capa 2 o tormentas de broadcast en la subred."
+    }
+  ],
+  "checklist": [
+    { "id": "chk_ping_lan_burst", "text": "Muestra sostenida de 30 pings a Gateway local", "mandatory": true },
+    { "id": "chk_ping_wan_burst", "text": "Muestra sostenida de 50 pings a DNS público (8.8.8.8)", "mandatory": true },
+    { "id": "chk_tracert_hops", "text": "Traza de ruta completa 'tracert -d' documentada con saltos", "mandatory": true },
+    { "id": "chk_traffic_check", "text": "Inspección de consumo anormal de ancho de banda local", "mandatory": false }
+  ]
+}

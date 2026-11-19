@@ -1,0 +1,49 @@
+{
+  "code": "SKILL-NET-04",
+  "title": "Triaje de Configuración Local, MTU y Enrutamiento de Host",
+  "category": "CONFIGURACION_LOCAL",
+  "summary": "Triaje de problemas específicos del sistema operativo: MTU mismatch (fragmentación bloqueada en VPNs), proxies retenidos y bloqueos de firewall local.",
+  "severityRecommended": "P3",
+  "commands": [
+    {
+      "command": "ping -f -l 1472 8.8.8.8",
+      "description": "Prueba de tamaño de paquete con bandera 'Don't Fragment' (DF). Evalúa MTU estándar de 1500 bytes.",
+      "expectedOutput": "Respuestas normales. Si responde 'Es necesario fragmentar el paquete pero se ha especificado DF', existe un cuello MTU menor a 1500."
+    },
+    {
+      "command": "netsh interface ipv4 show subinterfaces",
+      "description": "Lista las tarjetas de red y su valor MTU configurado.",
+      "expectedOutput": "Valores típicos: 1500 (Ethernet normal), 1492 (PPPoE), 1400-1420 (Túneles VPN/IPsec)."
+    },
+    {
+      "command": "netsh winhttp show proxy",
+      "description": "Verifica si existe un servidor proxy configurado a nivel de sistema que bloquee el tráfico HTTP/HTTPS.",
+      "expectedOutput": "'Acceso directo (sin servidor proxy)' a menos que la empresa use proxy explícito."
+    }
+  ],
+  "decisionTree": [
+    {
+      "step": 1,
+      "question": "¿El usuario puede abrir sitios livianos pero las páginas pesadas o transferencias SSH/VPN se congelan a mitad de carga?",
+      "ifYes": "Causa: MTU Black Hole / Discordancia de MTU. Los paquetes grandes se descartan porque ICMP fragmentation needed está bloqueado en la ruta. Continuar a Paso 2.",
+      "ifNo": "Verificar firewall y proxy en Paso 3."
+    },
+    {
+      "step": 2,
+      "question": "¿Al ejecutar 'ping -f -l 1472 8.8.8.8' se requiere fragmentar, pero con '-l 1420' sí responde?",
+      "ifYes": "Acción: Ajustar MTU del adaptador a 1452 o 1420 con comando: netsh interface ipv4 set subinterface \"Ethernet\" mtu=1420 store=persistent.",
+      "ifNo": "El MTU está dentro de los límites del camino de red."
+    },
+    {
+      "step": 3,
+      "question": "Al verificar 'netsh winhttp show proxy', ¿hay un proxy configurado apuntando a un puerto o IP inexistente?",
+      "ifYes": "Causa: Malware o configuración residual de VPN previa. Acción: Ejecutar 'netsh winhttp reset proxy' y limpiar opciones de Internet.",
+      "ifNo": "Verificar reglas de Windows Defender Firewall o antivirus corporativo."
+    }
+  ],
+  "checklist": [
+    { "id": "chk_mtu_ping", "text": "Prueba de fragmentación no permitida con ping -f -l", "mandatory": true },
+    { "id": "chk_proxy_check", "text": "Comprobación de proxy WinHTTP y configuración de navegador", "mandatory": true },
+    { "id": "chk_firewall_state", "text": "Revisión de perfil activo de Firewall (Dominio / Privado / Público)", "mandatory": false }
+  ]
+}

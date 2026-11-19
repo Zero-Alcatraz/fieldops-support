@@ -1,0 +1,56 @@
+{
+  "code": "SKILL-NET-01",
+  "title": "Triaje de Conectividad Física e IP Local",
+  "category": "CONECTIVIDAD_BASICA",
+  "summary": "Protocolo para diagnosticar fallas de capa física (L1), enlace local (L2) y asignación IP/Gateway (L3) en puestos de trabajo y sedes remotas.",
+  "severityRecommended": "P3",
+  "commands": [
+    {
+      "command": "ipconfig /all",
+      "description": "Inspecciona dirección IPv4, máscara de subred, puerta de enlace (Gateway) y servidor DHCP.",
+      "expectedOutput": "IPv4 válida (no 169.254.x.x), Gateway asignado y DHCP habilitado."
+    },
+    {
+      "command": "ping -n 4 <GATEWAY_IP>",
+      "description": "Prueba conectividad con el router local o switch de capa 3.",
+      "expectedOutput": "0% packet loss, tiempo < 2ms en cable / < 10ms en Wi-Fi."
+    },
+    {
+      "command": "ping -n 4 8.8.8.8",
+      "description": "Verifica si el tráfico de capa 3 sale a través del router de borde a Internet.",
+      "expectedOutput": "4 respuestas recibidas sin 'Tiempo de espera agotado'."
+    }
+  ],
+  "decisionTree": [
+    {
+      "step": 1,
+      "question": "¿El adaptador de red muestra cable conectado o red Wi-Fi asociada con link LED activo?",
+      "ifYes": "Paso 2: Comprobar direccionamiento IP.",
+      "ifNo": "Causa: Falla L1 (cable desconectado/dañado, puerto deshabilitado o radio Wi-Fi apagada). Acción: Reemplazar patch cord, probar otro puerto del switch o activar adaptador."
+    },
+    {
+      "step": 2,
+      "question": "Al ejecutar 'ipconfig /all', ¿la dirección IPv4 es del rango corporativo o inicia por 169.254.x.x (APIPA)?",
+      "ifYes": "Si es 169.254.x.x -> Causa: Agotamiento de pool DHCP o servidor DHCP inalcanzable. Acción: Ejecutar 'ipconfig /renew', verificar alcance de VLAN o asignar IP estática temporal de prueba.",
+      "ifNo": "Dirección IP válida obtenida. Continuar al Paso 3."
+    },
+    {
+      "step": 3,
+      "question": "¿El ping al Gateway predeterminado responde con 0% de pérdida?",
+      "ifYes": "Enlace LAN operativo. Continuar al Paso 4 para verificar salida WAN.",
+      "ifNo": "Causa: Puerta de enlace bloqueada, falla de ARP o duplicidad de IP. Acción: Probar 'arp -a', validar que la IP del gateway coincida con la documentación del sitio."
+    },
+    {
+      "step": 4,
+      "question": "¿El ping a la IP pública 8.8.8.8 responde exitosamente?",
+      "ifYes": "Conectividad IP completa operativa. Si el usuario aún no navega, aplicar SKILL-NET-03 (DNS).",
+      "ifNo": "Causa: Falla de enrutamiento WAN o corte de servicio ISP. Acción: Aplicar SKILL-ESC-01 para escalamiento con evidencia a Soporte ISP/NOC."
+    }
+  ],
+  "checklist": [
+    { "id": "chk_link_led", "text": "Verificación física de LEDs en tarjeta de red / switch", "mandatory": true },
+    { "id": "chk_ip_assigned", "text": "Confirmación de IP asignada fuera de rango APIPA (169.254.x.x)", "mandatory": true },
+    { "id": "chk_ping_gateway", "text": "Prueba de eco ICMP al Gateway predeterminado", "mandatory": true },
+    { "id": "chk_ping_external", "text": "Prueba de eco ICMP a IP pública externa (8.8.8.8)", "mandatory": true }
+  ]
+}

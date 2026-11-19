@@ -1,0 +1,34 @@
+{
+  "name": "fieldops-support",
+  "version": "1.0.0",
+  "description": "Banco modular de skills y plataforma operativa para triaje de fallas tecnicas de red, bitacoras y escalamientos",
+  "type": "module",
+  "main": "src/interfaces/http/server.js",
+  "scripts": {
+    "start": "node src/interfaces/http/server.js",
+    "dev": "node --watch src/interfaces/http/server.js",
+    "migrate": "node src/infrastructure/database/migrations.js",
+    "seed": "node src/infrastructure/database/seed.js",
+    "test": "node --test tests/unit/*.test.js tests/integration/*.test.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:integration": "node --test tests/integration/*.test.js"
+  },
+  "keywords": [
+    "fieldops",
+    "support",
+    "network-triage",
+    "helpdesk",
+    "hexagonal-architecture",
+    "sqlite"
+  ],
+  "author": "FieldOps & Support Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "zod": "^4.3.6"
+  }
+}

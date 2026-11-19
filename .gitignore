@@ -1,0 +1,26 @@
+# Dependencias
+node_modules/
+package-lock.json
+
+# Base de datos SQLite y archivos temporales WAL
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+data/
+
+# Variables de entorno y secretos
+.env
+.env.local
+.env.production
+*.pem
+
+# Logs del sistema
+*.log
+npm-debug.log*
+
+# Archivos de sistema operativo e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

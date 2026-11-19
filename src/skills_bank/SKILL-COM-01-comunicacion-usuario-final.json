@@ -1,0 +1,38 @@
+{
+  "code": "SKILL-COM-01",
+  "title": "Protocolo de Comunicación Asertiva con el Usuario Final",
+  "category": "COMUNICACION_USUARIO",
+  "summary": "Pautas de comunicación empática y profesional para soporte en sitio y mesa de ayuda, traduciendo jerga técnica y gestionando expectativas.",
+  "communicationSteps": [
+    {
+      "phase": "Apertura y Empatía",
+      "objective": "Validar el impacto en las labores del usuario y establecer confianza inicial.",
+      "recommendedPhrases": [
+        "Buenos días/tardes. Mi nombre es [Nombre], del equipo de soporte de FieldOps. Comprendo que este incidente está afectando sus actividades con [nombre de aplicación/servicio]; voy a revisar el enlace para restablecer el servicio a la brevedad.",
+        "Entiendo la urgencia de su entrega. Realizaremos un diagnóstico paso a paso en el equipo para identificar si la causa está en el cableado, la asignación de red o la salida a Internet."
+      ],
+      "prohibitedPhrases": [
+        "El problema seguro es de ustedes que movieron algo.",
+        "Eso no me corresponde a mí, abra otro ticket.",
+        "La red se cayó y no hay nada que hacer hasta nuevo aviso."
+      ]
+    },
+    {
+      "phase": "Durante el Diagnóstico (Traducción de jerga)",
+      "objective": "Explicar lo que se está ejecutando sin abrumar con tecnicismos.",
+      "translations": [
+        { "techTerm": "Agotamiento de pool DHCP / IP APIPA", "userExplanation": "El equipo no ha recibido una dirección válida de la red central; vamos a refrescar la solicitud al servidor para que le asigne su conexión." },
+        { "techTerm": "Pérdida de paquetes y jitter alto", "userExplanation": "La señal de la conexión está teniendo microcortes, lo que causa lentitud al abrir archivos o congelamiento en llamadas." },
+        { "techTerm": "Falla de resolución DNS", "userExplanation": "Su equipo tiene conexión con la red, pero el directorio de nombres no le está indicando dónde se encuentra el servidor web." }
+      ]
+    },
+    {
+      "phase": "Cierre y Verificación Compartida",
+      "objective": "Asegurar que el usuario pruebe su flujo de trabajo real antes de cerrar la visita.",
+      "recommendedPhrases": [
+        "Hemos restablecido la conexión y las pruebas de red muestran tiempos de respuesta óptimos. Por favor, intente ingresar a su sistema y realizar su tarea habitual para verificar juntos que todo opere con normalidad.",
+        "¿Hay alguna otra consulta o servicio que requiera validación antes de generar el acta de cierre?"
+      ]
+    }
+  ]
+}

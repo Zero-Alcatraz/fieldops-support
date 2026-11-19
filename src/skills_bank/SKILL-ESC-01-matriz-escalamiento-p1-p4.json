@@ -1,0 +1,58 @@
+{
+  "code": "SKILL-ESC-01",
+  "title": "Matriz de Escalamiento Técnico con Evidencia Mínima",
+  "category": "ESCALAMIENTO_TECNICO",
+  "summary": "Criterios de clasificación P1–P4, tiempos de SLA y lista obligatoria de evidencias para evitar el rebote de incidentes hacia L2/L3 o proveedores.",
+  "severityMatrix": [
+    {
+      "level": "P1",
+      "definition": "Crítico / Emergencia",
+      "impact": "Sede principal desconectada, router central caído o más del 50% de usuarios sin operaciones críticas.",
+      "slaHours": 2,
+      "escalateTo": "L3_INGENIERIA_RED"
+    },
+    {
+      "level": "P2",
+      "definition": "Alto / Degradación Severa",
+      "impact": "Pérdida de paquetes sostenida > 5%, latencia extrema o caída de canal secundario con riesgo de indisponibilidad.",
+      "slaHours": 4,
+      "escalateTo": "L2_ESPECIALISTA"
+    },
+    {
+      "level": "P3",
+      "definition": "Medio / Falla Aislada",
+      "impact": "Un usuario o dispositivo específico sin servicio o lentitud en aplicación no crítica.",
+      "slaHours": 8,
+      "escalateTo": "L2_ESPECIALISTA"
+    },
+    {
+      "level": "P4",
+      "definition": "Bajo / Requerimiento Menor",
+      "impact": "Consultas técnicas, cambios menores de configuración local sin interrupción de tareas.",
+      "slaHours": 24,
+      "escalateTo": "L2_ESPECIALISTA"
+    }
+  ],
+  "minimumEvidenceChecklist": [
+    {
+      "key": "pingTest",
+      "name": "Pruebas de Ping cuantitativas",
+      "requirement": "Captura o log con al menos 20 paquetes indicando loss% y tiempos mínimos/medios/máximos a Gateway y destino externo."
+    },
+    {
+      "key": "ipConfig",
+      "name": "Detalle de Configuración IP",
+      "requirement": "Salida de 'ipconfig /all' o interfaz indicando IP, máscara, gateway, DNS y servidor DHCP emisor."
+    },
+    {
+      "key": "tracerouteTest",
+      "name": "Trazado de Ruta (Tracert)",
+      "requirement": "Traza completa hasta el host destino demostrando el salto exacto donde se genera el corte o la latencia."
+    }
+  ],
+  "antiPatterns": [
+    "Escalar con la frase 'No hay red' sin adjuntar comandos ejecutados.",
+    "Solicitar cambio de switch o router sin verificar primero patch cords y puertos locales.",
+    "Asignar severidad P1 a problemas individuales para saltarse la cola de atención."
+  ]
+}

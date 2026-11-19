@@ -1,0 +1,50 @@
+{
+  "code": "SKILL-NET-03",
+  "title": "Diagnóstico de Resolución de Nombres (DNS)",
+  "category": "RESOLUCION_DNS",
+  "summary": "Resolución de incidencias donde hay conectividad IP por dirección pero falla la navegación o apertura de aplicaciones por nombre de dominio.",
+  "severityRecommended": "P3",
+  "commands": [
+    {
+      "command": "ipconfig /flushdns",
+      "description": "Vacía y restablece el contenido de la caché de resolución del cliente DNS.",
+      "expectedOutput": "'Se vació correctamente la caché de resolución de DNS'."
+    },
+    {
+      "command": "nslookup <DOMINIO_CORPORATIVO>",
+      "description": "Consulta el servidor DNS configurado actualmente en la máquina.",
+      "expectedOutput": "Respuesta no autoritativa con la IP o CNAME correcto del host."
+    },
+    {
+      "command": "nslookup <DOMINIO_CORPORATIVO> 1.1.1.1",
+      "description": "Fuerza la consulta a un resolvedor DNS público para comparar si el problema es local o global.",
+      "expectedOutput": "Permite distinguir si el fallo está en el DNS corporativo/ISP o en el registro público."
+    }
+  ],
+  "decisionTree": [
+    {
+      "step": 1,
+      "question": "¿El ping a la IP 8.8.8.8 responde, pero el ping a google.com indica 'No se pudo encontrar el host'?",
+      "ifYes": "Confirmado: Falla aislada en el subsistema de resolución DNS. Continuar al Paso 2.",
+      "ifNo": "Si falla tanto a IP como a dominio, el problema es de conectividad general (regresar a SKILL-NET-01)."
+    },
+    {
+      "step": 2,
+      "question": "¿El comando 'ipconfig /flushdns' y posterior intento de navegación soluciona el problema?",
+      "ifYes": "Causa: Caché DNS corrupta o registro TTL expirado retenido localmente. Acción: Solucionado sin cambios de configuración.",
+      "ifNo": "Continuar a Paso 3 para verificar servidores DNS asignados."
+    },
+    {
+      "step": 3,
+      "question": "Al ejecutar 'nslookup dominio.com', ¿se recibe 'DNS request timed out' o 'Server failure'?",
+      "ifYes": "Causa: El servidor DNS asignado por DHCP o configurado estáticamente está inaccesible o caído. Acción: Probar consulta contra 1.1.1.1 o 8.8.8.8; si funciona, configurar resolvedores secundarios o reportar caída del DC/DNS local.",
+      "ifNo": "Si responde 'Non-existent domain' (NXDOMAIN), verificar ortografía del dominio o registro interno en zona privada."
+    }
+  ],
+  "checklist": [
+    { "id": "chk_ip_vs_domain", "text": "Prueba comparativa ping a IP numérica vs ping a FQDN", "mandatory": true },
+    { "id": "chk_flushdns_done", "text": "Vaciado de caché local con 'ipconfig /flushdns'", "mandatory": true },
+    { "id": "chk_nslookup_local", "text": "Consulta nslookup al servidor DNS configurado", "mandatory": true },
+    { "id": "chk_nslookup_public", "text": "Consulta nslookup forzada contra resolvedor público", "mandatory": true }
+  ]
+}
